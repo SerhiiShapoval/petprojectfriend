@@ -3,6 +3,8 @@ spring:
     config:
       uri: http://localhost:8888
   application:
-    name: customer-service
+    name: project-service
+
+
 
 

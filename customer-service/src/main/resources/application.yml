@@ -1,0 +1,15 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    username: bootemailspring@gmail.com
+    password: fjurdvttfvwrxes
+
+
+
+
+
+
+
+

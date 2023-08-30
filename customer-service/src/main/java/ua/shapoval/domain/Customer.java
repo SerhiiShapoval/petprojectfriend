@@ -1,11 +1,13 @@
 package ua.shapoval.domain;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -14,13 +16,24 @@ import lombok.*;
 @Setter
 @Getter
 @ToString(exclude = "id")
+@Table(name = "customers")
+@Builder
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String firstName;
-    private String secondName;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
+
+    @Column(nullable = false)
+    private String login;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false,unique = true)
     private String email;
 
+
+    @OneToMany(mappedBy = "customer")
+    private List<CustomerFriend> friends = new ArrayList<>();
 }
