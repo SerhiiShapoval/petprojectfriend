@@ -1,3 +1,9 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
 # Default ignored files
 /shelf/
 /workspace.xml
@@ -7,11 +13,7 @@
 /dataSources/
 /dataSources.local.xml
 
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+
 
 ## Java
 .mtj.tmp/
