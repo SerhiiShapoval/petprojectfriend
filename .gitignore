@@ -1,8 +1,7 @@
 HELP.md
-target/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
+!**/src/main/**/target/
+!**/src/test/**/target/
 ## Java
 .mtj.tmp/
 *.class
