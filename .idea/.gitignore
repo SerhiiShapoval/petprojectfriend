@@ -7,6 +7,12 @@
 /dataSources/
 /dataSources.local.xml
 
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
 ## Java
 .mtj.tmp/
 *.class
@@ -26,3 +32,6 @@ out/
 .idea-workspace.xml
 .idea-workspace/
 .idea_caches/
+
+### VS Code ###
+.vscode/
