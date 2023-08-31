@@ -1,7 +1,12 @@
 HELP.md
+target/
+bin/
+out/
+build/
+# Maven
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+#!**/src/main/**/target/
+#!**/src/test/**/target/
 ## Java
 .mtj.tmp/
 *.class
@@ -13,7 +18,7 @@ replay_pid*
 *.iml
 *.ipr
 *.iws
-.idea
+.idea/
 *.log
 *.bak
 *.tmp
