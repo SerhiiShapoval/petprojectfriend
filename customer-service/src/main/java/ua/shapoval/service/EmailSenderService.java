@@ -4,6 +4,8 @@ import org.springframework.mail.SimpleMailMessage;
 
 public interface EmailSenderService {
 
-    void confirmEmail (String email);
+
+
+    void sendMassage (String email);
 
 }

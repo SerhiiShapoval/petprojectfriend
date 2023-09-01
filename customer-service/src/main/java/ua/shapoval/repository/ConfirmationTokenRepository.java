@@ -8,6 +8,9 @@ import ua.shapoval.domain.ConfirmationToken;
 @Repository
 public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, Long> {
 
-    ConfirmationToken findByConfirmationToken(String token);
+    ConfirmationToken findByVerificationToken (String token);
+    void deleteAllBySentToCustomerFalse();
+
+    boolean existsByVerificationToken(String token);
 
 }

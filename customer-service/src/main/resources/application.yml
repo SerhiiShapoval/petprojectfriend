@@ -4,7 +4,15 @@ spring:
     port: 587
     protocol: smtp
     username: bootemailspring@gmail.com
-    password: 
+    password: kawhsiipbnrsebhv
+    properties:
+      mail:
+        smtp:
+          starttls:
+            required: true
+
+
+
 
 
 

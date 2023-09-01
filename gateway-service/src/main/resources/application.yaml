@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+       - id : registration-service-route
+         uri: lb://customer-service
+         predicates:
+          - Path=/api/v1/customer/registration
+          - Path=/api/v1/confirm-account

@@ -22,7 +22,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    private UUID id;
 
     @Column(nullable = false)
     private String login;
@@ -32,6 +32,9 @@ public class Customer {
 
     @Column(nullable = false,unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private boolean confirmed;
 
 
     @OneToMany(mappedBy = "customer")

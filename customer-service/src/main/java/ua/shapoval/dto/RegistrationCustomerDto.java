@@ -32,11 +32,9 @@ public class RegistrationCustomerDto {
     @Email(message = " Input correct email address for registration ")
     private String email;
 
-    private void checkPasswordEquality(String password, String confirmPassword){
+    public void checkPasswordEquality(String password, String confirmPassword){
         if (!Objects.equals(password,confirmPassword)){
-            throw new BadCredentialException(" Passwords must be the same",
-                    HttpStatus.BAD_REQUEST,
-                    HttpStatusCode.valueOf(400));
+            throw new BadCredentialException(" Passwords must be the same ");
         }
     }
 

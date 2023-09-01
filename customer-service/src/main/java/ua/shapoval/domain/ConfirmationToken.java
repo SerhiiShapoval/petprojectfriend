@@ -5,32 +5,45 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 @Setter
 @Getter
 @ToString(exclude = "id")
-@Table(name = "customers")
+@Table(name = "confirmation_token")
 @Builder
 public class ConfirmationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name="token_id")
-    private Long tokenId;
+    @Column(name="id")
+    private UUID id;
 
-    @Column(name="confirmation_token")
-    private String confirmationToken;
+    @Column(name="verification_token")
+    private String verificationToken;
 
     @CreationTimestamp
-    private LocalDate createDate;
+    private LocalDateTime createToken;
+    @Column(name = "expire")
+    private LocalDateTime expireToken;
 
-    public ConfirmationToken(){
+    @Column(nullable = false)
+    private boolean sentToCustomer;
 
-        this.confirmationToken = UUID.randomUUID().toString();
+    @OneToOne
+    @JoinColumn(name = "customers_id", nullable = false)
+    private Customer customer;
+
+
+    @PrePersist
+       private void set(){
+        this.expireToken = createToken.plusHours(24);
     }
+
+
 }

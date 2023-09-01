@@ -10,8 +10,9 @@ import org.springframework.http.HttpStatusCode;
 @Data
 @AllArgsConstructor
 @Builder
-public class BadCredentialException extends RuntimeException {
+public class ConfirmationTokenException extends RuntimeException {
 
-    private  String massage;
+
+    private String message;
 
 }

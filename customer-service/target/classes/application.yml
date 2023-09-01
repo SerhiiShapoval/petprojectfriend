@@ -1,5 +1,19 @@
-server:
-  port: 8484
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    username: bootemailspring@gmail.com
+    password: kawhsiipbnrsebhv
+    properties:
+      mail:
+        smtp:
+          starttls:
+            required: true
+
+
+
+
 
 
 
