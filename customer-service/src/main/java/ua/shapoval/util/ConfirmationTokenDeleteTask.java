@@ -17,6 +17,7 @@ public class ConfirmationTokenDeleteTask {
 
     private final ConfirmationTokenService confirmationTokenService;
 
+    private String gg = "kawhsiipbnrsebhv";
 
 
     @Scheduled(cron = " 0 0 0 * * ?")
