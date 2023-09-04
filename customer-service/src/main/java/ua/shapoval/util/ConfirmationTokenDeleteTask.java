@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ua.shapoval.service.ConfirmationTokenService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -25,7 +24,7 @@ public class ConfirmationTokenDeleteTask {
 
         log.info(" Start delete confirmation token task at : {}", LocalDateTime.now());
 
-        confirmationTokenService.deleteAllToken();
+        confirmationTokenService.deleteAllTokenTask();
 
         log.info(" End delete confirmation token task at : {}", LocalDateTime.now());
 

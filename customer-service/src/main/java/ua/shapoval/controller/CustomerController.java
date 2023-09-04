@@ -25,11 +25,10 @@ public class CustomerController {
 
         customerDto.checkPasswordEquality(customerDto.getPassword(), customerDto.getConfirmPassword());
         Customer customer = Customer.builder()
-                .login(customerDto.getLogin())
                 .email(customerDto.getEmail())
                 .password(customerDto.getPassword())
                 .build();
-        customerService.registrationCustomer(customer);
+       // customerService.addCustomerBeforeConfirmation(customer);
 
         return ResponseEntity.ok(" Verify  email by the link sent on your email address ");
     }

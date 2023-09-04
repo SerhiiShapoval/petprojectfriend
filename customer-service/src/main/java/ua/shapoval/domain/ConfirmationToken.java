@@ -24,12 +24,12 @@ public class ConfirmationToken {
     @Column(name="id")
     private UUID id;
 
-    @Column(name="verification_token")
+    @Column(name="verification_token", unique = true, nullable = false)
     private String verificationToken;
 
     @CreationTimestamp
     private LocalDateTime createToken;
-    @Column(name = "expire")
+    @Column(name = "expire", nullable = false)
     private LocalDateTime expireToken;
 
     @Column(nullable = false)

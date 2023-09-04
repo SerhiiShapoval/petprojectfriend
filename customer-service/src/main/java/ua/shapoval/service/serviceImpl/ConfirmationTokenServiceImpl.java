@@ -2,15 +2,16 @@ package ua.shapoval.service.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import ua.shapoval.domain.ConfirmationToken;
 import ua.shapoval.error.ConfirmationTokenException;
+import ua.shapoval.error.Errors;
 import ua.shapoval.repository.ConfirmationTokenRepository;
 import ua.shapoval.service.ConfirmationTokenService;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -20,42 +21,59 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
+
     @Override
-    public boolean isTokenValid(String token) {
-        if (token == null || !confirmationTokenRepository.existsByVerificationToken(token) ) {
-            log.error(" Token not valid :{} ", token);
-            throw new ConfirmationTokenException(" The token is not validated. ");
+    public ConfirmationToken tokenVerification(String token) {
+
+        if (token == null || token.isEmpty()) {
+            throw new ConfirmationTokenException(" Verification token is null or empty.");
         }
 
-        return true;
+        return confirmationTokenRepository.getByVerificationTokenAndAndExpireTokenBefore(token, LocalDateTime.now())
+                .orElseThrow(() -> new ConfirmationTokenException(" Verification token has expire "));
     }
 
+
+
     @Override
-    public boolean isTokenExpire(String token) {
-
-        ConfirmationToken confirmationToken = getByByVerificationToken(token);
-        if ( LocalDateTime.now().isAfter(confirmationToken.getExpireToken())){
-           log.error(" Error token expired :{}", confirmationToken);
-            throw new ConfirmationTokenException(" The token expired ");
-
+    public ConfirmationToken createToken() {
+        try {
+            log.info(" Creating a verification token ");
+            return confirmationTokenRepository.save(ConfirmationToken.builder()
+                    .verificationToken(UUID.randomUUID().toString())
+                            .sentToCustomer(false)
+                    .build());
+        }catch (Exception exception){
+            log.error(" An error occurred while generating the token. Exception :{} ", exception.getMessage());
+            throw new RuntimeException(Errors.UNKNOWN_ERROR.getMessage());
         }
-        return true;
     }
 
     @Override
-    public ConfirmationToken getByByVerificationToken(String token) {
-        return confirmationTokenRepository.findByVerificationToken(token);
+    public void updateToken(ConfirmationToken confirmationToken) {
+
+        try {
+            confirmationTokenRepository.save(confirmationToken);
+        }catch (Exception exception){
+
+            log.error( "Error while update token status sent_to_customer" );
+            throw new RuntimeException(Errors.UNKNOWN_ERROR.getMessage());
+        }
     }
 
     @Override
-    public void deleteAllToken() {
+    public void deleteAllTokenTask() {
+
+        log.info(" Delete verification token where sent_to_customer = false ");
         confirmationTokenRepository.deleteAllBySentToCustomerFalse();
+
     }
 
     @Override
-    public void deleteToken(ConfirmationToken confirmationToken) {
+    public void deleteTokenAfterConfirmation (String confirmationToken) {
 
-        confirmationTokenRepository.delete(confirmationToken);
+        log.info(" Delete verification token after successful successful email verification :{}", confirmationToken);
+        confirmationTokenRepository.deleteByVerificationToken(confirmationToken);
 
     }
 }

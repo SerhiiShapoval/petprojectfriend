@@ -24,8 +24,6 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
-    private String login;
 
     @Column(nullable = false)
     private String password;

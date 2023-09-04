@@ -4,7 +4,8 @@ import ua.shapoval.domain.Customer;
 
 public interface CustomerService {
 
-    void registrationCustomer(Customer customer);
-    void confirmEmail(String token);
+    void registration(Customer customer);
+    void saveCustomerWithConfirmation(String token);
+
 
 }

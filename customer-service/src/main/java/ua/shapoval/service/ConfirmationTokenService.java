@@ -2,17 +2,17 @@ package ua.shapoval.service;
 
 import ua.shapoval.domain.ConfirmationToken;
 
-import java.util.UUID;
-
 public interface ConfirmationTokenService {
 
-    boolean isTokenValid(String token);
 
-    boolean isTokenExpire(String token);
+    ConfirmationToken tokenVerification (String token);
 
-    void deleteToken (ConfirmationToken confirmationToken);
-    ConfirmationToken getByByVerificationToken(String token);
+    void updateToken(ConfirmationToken confirmationToken);
 
-    void deleteAllToken();
+    void deleteTokenAfterConfirmation (String token);
+
+    void deleteAllTokenTask();
+
+    ConfirmationToken createToken();
 
 }

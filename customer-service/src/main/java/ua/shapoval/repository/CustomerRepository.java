@@ -5,11 +5,13 @@ import org.springframework.stereotype.Repository;
 import ua.shapoval.domain.Customer;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
-    boolean existsByEmailAndLoginAndConfirmedTrue( String email, String login);
-    boolean existsByEmailAndLoginAndConfirmedFalse( String email, String login);
-    Optional<Customer> findById(Long id);
+
+    boolean existsByEmailAndConfirmedTrue(String email);
+    Optional<Customer> findById(UUID id);
+    Optional<Customer> findCustomerByEmail (String email);
 }
