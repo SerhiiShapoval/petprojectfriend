@@ -1,17 +1,21 @@
 package ua.shapoval.service.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ua.shapoval.domain.ConfirmationToken;
 import ua.shapoval.domain.Customer;
 import ua.shapoval.error.BadCredentialException;
+import ua.shapoval.error.EmailVerificationException;
 import ua.shapoval.error.Errors;
 import ua.shapoval.repository.CustomerRepository;
 import ua.shapoval.service.CustomerService;
 import ua.shapoval.service.EmailSenderService;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -30,25 +34,35 @@ public class CustomerServiceImpl implements CustomerService {
     public void registration(Customer customer) {
 
         log.info(" Registration customer  email: {}",  customer.getEmail());
-        processEmailVerification(customer.getEmail());
 
-        processEmailVerification(customer.getEmail());
-        log.info(" Verification token sent successfully to the email : {} ", customer.getEmail());
+        if (!customerRepository.existsByEmail(customer.getEmail())){
 
-        saveCustomerBeforeConfirmationEmail(customer);
-        log.info(" Save customer: {} ", customer);
+            log.info( " New customer registration with email: {}", customer.getEmail());
+
+            emailSenderService.sendMassage(customer.getEmail()
+                    , generationTokenForCustomer(saveCustomerBeforeConfirmationEmail(customer)).getVerificationToken());
+
+        }else {
+
+            reSentConfirmationToken(customer.getEmail());
+
+        }
+
+
 
     }
 
-    private void saveCustomerBeforeConfirmationEmail(Customer customer){
+    private Customer saveCustomerBeforeConfirmationEmail(Customer customer){
 
      try {
-        customerRepository.save(Customer.builder()
+
+         log.info(" Save customer without confirmation :{} ", customer );
+        return customerRepository.save(Customer.builder()
                 .password(passwordEncoder.encode(customer.getPassword()))
                 .email(customer.getEmail())
                 .confirmed(false)
                 .build());
-        log.info(" Save customer without confirmation ");
+
     }catch (Exception exception){
          log.error(" An error occurred while saving customer. Exception :{}", exception.getMessage());
          throw new RuntimeException( Errors.UNKNOWN_ERROR.getMessage() );
@@ -56,46 +70,47 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     }
+    private ConfirmationToken generationTokenForCustomer(Customer customer){
 
-    private void processEmailVerification(String email) {
+        return confirmationTokenService.createTokenForCustomer(customer);
 
-         customerRepository.findCustomerByEmail(email).ifPresentOrElse(
-                        customer -> {
-                       if (customer.isConfirmed()){
-                           log.error(" Registration failed, email is busy : {}", email);
-                           throw new BadCredentialException("Email is busy");
-                            }else {
-                                log.info("Resending verification token to email: {}", email);
-                                emailSenderService.sendMassage(email);
-                                throw new BadCredentialException(" Verification token sent to the email again ");
-                             }
-                         },
-                        () -> {
-                            log.info( " New registration for email: {}", email);
-                            emailSenderService.sendMassage(email);
-                        }
-         );
+    }
+    private void reSentConfirmationToken(String email){
+
+       Customer customer = customerRepository.findCustomerByEmail(email)
+                .filter(c -> !c.isConfirmed())
+                .orElseThrow(() ->{
+                    log.error(" Error registration email is busy ");
+                    throw new BadCredentialException(" This email has already registered. Try to login ");
+                });
+
+
+       emailSenderService.sendMassage(email, generationTokenForCustomer(customer).getVerificationToken());
+
+        log.info("Resending verification token to email: {}", email );
+        throw new EmailVerificationException(" Email has been registered " +
+                ".Verification token sent to the email again ");
+
     }
 
 
+
+    @Transactional
     @Override
     public void saveCustomerWithConfirmation(String token) {
 
-       Customer customer = confirmationTokenService.tokenVerification(token).getCustomer();
+          Customer customer = confirmationTokenService.tokenVerification(token).getCustomer();
 
-       log.info(" The customer has verified his email :{} ", customer.getEmail());
-       customer.setConfirmed(true);
+          log.info(" The customer has verified his email :{} ", customer.getEmail());
 
-      try {
+          customer.setConfirmed(true);
+
           customerRepository.save(customer);
           log.info(" Registration customer completed successfully: {} ", customer);
-      }catch (Exception exception){
-          log.error(" An error occurred while saving a user with a verified email. Exception :{} ", exception.getMessage() );
-          throw new RuntimeException( Errors.UNKNOWN_ERROR.getMessage());
+
+          confirmationTokenService.deleteTokenAfterConfirmation(token);
+
       }
-
-
-        confirmationTokenService.deleteTokenAfterConfirmation(token);
 
     }
 
@@ -107,4 +122,4 @@ public class CustomerServiceImpl implements CustomerService {
 
 
 
-}
+

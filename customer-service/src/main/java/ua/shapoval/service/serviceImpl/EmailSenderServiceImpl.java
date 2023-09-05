@@ -34,24 +34,24 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
 
     @Override
-    public void sendMassage(String email) {
+    public void sendMassage(String email, String token) {
 
-        ConfirmationToken confirmationToken = confirmationTokenService.createToken();
 
-        SimpleMailMessage message = new SimpleMailMessage();
+        try {
+
+
+
+            SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject(" Hi! Complete Registration! ");
         message.setFrom(senderEmail);
         message.setText("To confirm your account, please click here : "
                 + "http://localhost:8484/api/v1/confirm-account?token="
-                + confirmationToken.getVerificationToken());
-        try {
+                + token);
 
-            javaMailSender.send(message);
+        javaMailSender.send(message);
 
-            confirmationToken.setSentToCustomer(true);
-            confirmationTokenService.updateToken(confirmationToken);
-            log.info(" Update token field sent_to_customer = true");
+
         } catch (Exception exception) {
 
             log.error(" Message sending error. Exception : {} ", exception.getMessage() );

@@ -1,18 +1,21 @@
 package ua.shapoval.service;
 
 import ua.shapoval.domain.ConfirmationToken;
+import ua.shapoval.domain.Customer;
 
 public interface ConfirmationTokenService {
 
 
     ConfirmationToken tokenVerification (String token);
 
-    void updateToken(ConfirmationToken confirmationToken);
 
     void deleteTokenAfterConfirmation (String token);
 
-    void deleteAllTokenTask();
+    void deleteAllTokenExpiredTask();
 
-    ConfirmationToken createToken();
+    ConfirmationToken createTokenForCustomer(Customer customer);
+
+
+
 
 }

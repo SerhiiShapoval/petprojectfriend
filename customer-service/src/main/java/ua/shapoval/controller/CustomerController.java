@@ -1,6 +1,7 @@
 package ua.shapoval.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +12,7 @@ import ua.shapoval.domain.Customer;
 import ua.shapoval.dto.RegistrationCustomerDto;
 import ua.shapoval.service.CustomerService;
 
-import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -28,7 +29,7 @@ public class CustomerController {
                 .email(customerDto.getEmail())
                 .password(customerDto.getPassword())
                 .build();
-       // customerService.addCustomerBeforeConfirmation(customer);
+        customerService.registration(customer);
 
         return ResponseEntity.ok(" Verify  email by the link sent on your email address ");
     }

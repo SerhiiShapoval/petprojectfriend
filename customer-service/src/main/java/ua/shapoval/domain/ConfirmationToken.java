@@ -29,21 +29,16 @@ public class ConfirmationToken {
 
     @CreationTimestamp
     private LocalDateTime createToken;
-    @Column(name = "expire", nullable = false)
+
+
+    @Column(name = "expire")
     private LocalDateTime expireToken;
 
-    @Column(nullable = false)
-    private boolean sentToCustomer;
 
-    @OneToOne
-    @JoinColumn(name = "customers_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customers_id")
     private Customer customer;
 
-
-    @PrePersist
-       private void set(){
-        this.expireToken = createToken.plusHours(24);
-    }
 
 
 }

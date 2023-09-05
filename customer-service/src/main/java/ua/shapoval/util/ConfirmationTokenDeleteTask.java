@@ -20,11 +20,11 @@ public class ConfirmationTokenDeleteTask {
 
 
     @Scheduled(cron = " 0 0 0 * * ?")
-    public void deleteExpiredTokens(){
+    public void deletedTokenExpired(){
 
         log.info(" Start delete confirmation token task at : {}", LocalDateTime.now());
 
-        confirmationTokenService.deleteAllTokenTask();
+        confirmationTokenService.deleteAllTokenExpiredTask();
 
         log.info(" End delete confirmation token task at : {}", LocalDateTime.now());
 
