@@ -1,3 +1,5 @@
+
+
 spring:
   cloud:
     gateway:
@@ -7,3 +9,5 @@ spring:
          predicates:
           - Path=/api/v1/customer/registration
           - Path=/api/v1/confirm-account
+server:
+  port: 8989

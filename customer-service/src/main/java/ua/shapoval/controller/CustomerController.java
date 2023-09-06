@@ -1,6 +1,12 @@
 package ua.shapoval.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +19,29 @@ import ua.shapoval.dto.RegistrationCustomerDto;
 import ua.shapoval.service.CustomerService;
 
 
-
+@Tag(name = " Customer API ")
 @RestController
 @RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
+
+    @Operation(summary = " Registration new customer without confirm email confirmation "
+            , description = " Return a mail confirmation message ")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = " 200 " ,
+                    description = " Verify  email by the link sent on your email address " ,
+                    content = { @Content(
+                            mediaType = "application/json" ,
+                            schema = @Schema(implementation = RegistrationCustomerDto.class))}) ,
+            @ApiResponse(
+                    responseCode = " 400 " ,
+                    description = " Bad credential. Invalid email or password " ) ,
+            @ApiResponse(
+                    responseCode = "409" ,
+                    description = "Conflict: Email already confirmed. Resent confirmation . " ) })
 
     @PostMapping("/registration")
     public ResponseEntity<String> add(@RequestBody @Valid RegistrationCustomerDto customerDto){

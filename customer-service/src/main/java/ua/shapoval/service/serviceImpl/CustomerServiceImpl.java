@@ -14,8 +14,7 @@ import ua.shapoval.repository.CustomerRepository;
 import ua.shapoval.service.CustomerService;
 import ua.shapoval.service.EmailSenderService;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 
 @RequiredArgsConstructor
@@ -65,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     }catch (Exception exception){
          log.error(" An error occurred while saving customer. Exception :{}", exception.getMessage());
-         throw new RuntimeException( Errors.UNKNOWN_ERROR.getMessage() );
+         throw new RuntimeException( Errors.UNKNOWN_ERROR.getMessage() + exception.getMessage() );
      }
 
 

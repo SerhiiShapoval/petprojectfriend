@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 @RequiredArgsConstructor
 @Slf4j
-public class ControllerAdviceHandler{
+public class ControllerAdviceHandler {
 
 
     @ExceptionHandler(BadCredentialException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> handlerBadCredentialException(BadCredentialException exception){
+    public ResponseEntity<?> handlerBadCredentialException(BadCredentialException exception) {
 
         return new ResponseEntity<>(exception.getMassage(), HttpStatusCode.valueOf(400));
 
@@ -33,7 +33,7 @@ public class ControllerAdviceHandler{
 
     @ExceptionHandler(ConfirmationTokenException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> handlerConfirmationTokenException(ConfirmationTokenException exception){
+    public ResponseEntity<?> handlerConfirmationTokenException(ConfirmationTokenException exception) {
 
         return new ResponseEntity<>(exception.getMessage(), HttpStatusCode.valueOf(400));
 
@@ -41,24 +41,31 @@ public class ControllerAdviceHandler{
 
     @ExceptionHandler(EmailVerificationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity<?>  handlerEmailVerificationException(EmailVerificationException exception){
-        return new ResponseEntity<>(exception.getMassage(),HttpStatusCode.valueOf(409));
+    public ResponseEntity<?> handlerEmailVerificationException(EmailVerificationException exception) {
+        return new ResponseEntity<>(exception.getMassage(), HttpStatusCode.valueOf(409));
     }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> handlerMethodArgumentNotValidException (MethodArgumentNotValidException exception){
+    public ResponseEntity<?> handlerMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
 
         return new ResponseEntity<>(exception
                 .getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(FieldError::getDefaultMessage)
-                        .collect(Collectors.toList()),
+                .collect(Collectors.toList()),
 
                 HttpStatusCode.valueOf(400));
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<?> handlerRuntimeException(RuntimeException exception) {
 
+        return new ResponseEntity<>(exception.getMessage(), HttpStatusCode.valueOf(500));
+
+
+    }
 }

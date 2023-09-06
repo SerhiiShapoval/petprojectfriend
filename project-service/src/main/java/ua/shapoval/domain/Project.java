@@ -1,10 +1,11 @@
 package ua.shapoval.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;

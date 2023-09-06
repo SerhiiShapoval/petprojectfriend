@@ -45,7 +45,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
                     .build());
         }catch (Exception exception){
             log.error(" An error occurred while generating the token. Exception :{} ", exception.getMessage());
-            throw new RuntimeException(Errors.UNKNOWN_ERROR.getMessage());
+            throw new RuntimeException(Errors.UNKNOWN_ERROR.getMessage() + exception.getMessage());
         }
     }
 

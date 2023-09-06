@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
+;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,7 +48,7 @@ class ConfirmationTokenServiceImplTest {
     }
 
     @Test
-    void createTokenForCustomer() {
+    void createTokenForCustomerTest() {
 
        ConfirmationToken validToken = getTokens().get(0);
 
