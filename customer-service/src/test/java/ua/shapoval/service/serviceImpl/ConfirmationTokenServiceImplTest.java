@@ -39,7 +39,7 @@ class ConfirmationTokenServiceImplTest {
                 .build();
         ConfirmationToken notValidToken = ConfirmationToken.builder()
                 .id(UUID.fromString("a0c1a49e-b6d3-4db6-9e9b-ef220f593a82"))
-                .verificationToken(" not valid token ")
+                .verificationToken(" invalid token ")
                 .createToken(LocalDateTime.now())
                 .expireToken(LocalDateTime.now().plusHours(12))
                 .build();
@@ -137,7 +137,7 @@ class ConfirmationTokenServiceImplTest {
 
 
         List<ConfirmationToken> validList = getTokens().stream()
-                .filter(confirmationToken -> confirmationToken.getVerificationToken().equals(" not valid token "))
+                .filter(confirmationToken -> confirmationToken.getVerificationToken().equals(" invalid token "))
                     .toList();
 
        doNothing().when(confirmationTokenRepository).deleteAllByExpireTokenIsBefore(any(LocalDateTime.class));
@@ -147,7 +147,7 @@ class ConfirmationTokenServiceImplTest {
         assertNotEquals(validList.size(), getTokens().size());
 
         assertTrue(validList.stream()
-                .anyMatch(confirmationToken -> confirmationToken.getVerificationToken().equals(" not valid token ")));
+                .anyMatch(confirmationToken -> confirmationToken.getVerificationToken().equals(" invalid token ")));
 
         assertEquals(1, validList.size());
 
@@ -156,7 +156,7 @@ class ConfirmationTokenServiceImplTest {
     @Test
     public void deleteTokenAfterConfirmationTest() {
 
-        String deleteVerificationToken = " not valid token ";
+        String deleteVerificationToken = " invalid token ";
 
 
         List<ConfirmationToken> validListTokens = getTokens().stream()

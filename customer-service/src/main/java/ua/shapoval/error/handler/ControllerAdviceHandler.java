@@ -1,6 +1,7 @@
 package ua.shapoval.error.handler;
 
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,9 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 @RequiredArgsConstructor
 @Slf4j
+@Hidden
 public class ControllerAdviceHandler {
+
 
 
     @ExceptionHandler(BadCredentialException.class)

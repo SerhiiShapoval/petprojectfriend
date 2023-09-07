@@ -32,16 +32,16 @@ public class CustomerController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = " 200 " ,
-                    description = " Verify  email by the link sent on your email address " ,
-                    content = { @Content(
-                            mediaType = "application/json" ,
-                            schema = @Schema(implementation = RegistrationCustomerDto.class))}) ,
+                    description = " Verify  email by the link sent on your email address " ) ,
             @ApiResponse(
                     responseCode = " 400 " ,
                     description = " Bad credential. Invalid email or password " ) ,
             @ApiResponse(
                     responseCode = "409" ,
-                    description = "Conflict: Email already confirmed. Resent confirmation . " ) })
+                    description = "Conflict: Email already confirmed. Resent confirmation . " ) ,
+            @ApiResponse(
+                    responseCode = " 500 " ,
+                    description = " Unknown error " ) })
 
     @PostMapping("/registration")
     public ResponseEntity<String> add(@RequestBody @Valid RegistrationCustomerDto customerDto){
