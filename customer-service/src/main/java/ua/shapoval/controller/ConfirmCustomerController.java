@@ -35,7 +35,7 @@ public class ConfirmCustomerController {
                     responseCode = " 500 " ,
                     description = " Unknown error " ) })
     @GetMapping
-    public ResponseEntity<?> confirmEmail(
+    public ResponseEntity<String> confirmEmail(
             @Parameter(description = " The token what was sent to the email" ,
             example = " b601d004-22ba-45d1-97c9-689ee2a44b2a ", required = true)
             @RequestParam("token") String confirmationToken ){

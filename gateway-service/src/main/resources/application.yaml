@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: gateway-service
   cloud:
     gateway:
       routes:
@@ -7,3 +9,20 @@ spring:
          predicates:
           - Path=/api/v1/customer/registration
           - Path=/api/v1/confirm-account
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8181/realms/petprojectfiend-realm
+
+
+server:
+  port: 8383
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

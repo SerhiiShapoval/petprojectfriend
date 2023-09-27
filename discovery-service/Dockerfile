@@ -1,0 +1,4 @@
+FROM openjdk:17-alpine
+WORKDIR /app
+COPY target/*.jar discovery-service.jar
+ENTRYPOINT ["java", "-jar", "discovery-service.jar"]

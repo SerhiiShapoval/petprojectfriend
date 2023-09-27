@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  discovery-service:
+    build: ./discovery-service
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+
+  config-service:
+    build: ./config-service
+    container_name: config-service
+    ports:
+    - "8888:8888"
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=projectdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+
+  project-service:
+    build: ./project-service
+    restart: always
+    container_name: project-service
+    depends_on:
+      - discovery-service
+      - config-service
+      - postgres
+
+
+
+
+
+#  customer-service:
+#    build: ./customer-service
+#    container_name: customer-service
+#    ports:
+#      - "8484:8484"
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#      - postgres
+#
+#  profile-service:
+#    build: ./profile-service
+#    container_name: profile-service
+#    ports:
+#      - "8686:8686"
+#    depends_on:
+#      - config-service
+#      - discovery-service
+#      - mongodb
+#
+#  mongodb:
+#    image: mongo
+#    container_name: mongodb
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - mongodb_data:/data/db
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=root
+#      - MONGO_INITDB_ROOT_PASSWORD=root
+#
+#  mongo-express:
+#    image: mongo-express
+#    container_name: mongo-express
+#    restart: always
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+#      - ME_CONFIG_MONGODB_ADMINPASSWORD=root
+#      - ME_CONFIG_MONGODB_SERVER=mongodb
+
+volumes:
+  mongodb_data:
+  postgres_data:
+
+networks:
+  default:
+      name: pet_net
+

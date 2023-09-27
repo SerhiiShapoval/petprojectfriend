@@ -35,7 +35,7 @@ public class ConfirmationToken {
     private LocalDateTime expireToken;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "customers_id")
     private Customer customer;
 

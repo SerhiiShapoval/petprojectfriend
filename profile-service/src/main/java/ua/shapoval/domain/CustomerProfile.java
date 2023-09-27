@@ -1,8 +1,10 @@
 package ua.shapoval.domain;
 
 
-import jakarta.persistence.*;
+
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import ua.shapoval.dto.CustomerDto;
 import ua.shapoval.dto.ProjectDto;
 
@@ -12,34 +14,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@Setter
-@Getter
-@ToString(exclude = "id")
-@Table(name = "profile")
-@Builder
+@Document
+@Data
 public class CustomerProfile {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
     private String firstName;
 
     private String lastName;
 
-    @Column(nullable = false)
+
     private LocalDate birthDate;
 
-    @Column(nullable = false)
+
     private String residence;
 
-    @Column(name = "programming_language", nullable = false)
-    @ElementCollection
+
     private List<String> progLanguages;
 
     private String position;
@@ -48,12 +41,12 @@ public class CustomerProfile {
 
     private String hobby;
 
-    @Column(nullable = false)
+
     private String linkedIn;
 
-    @Column(nullable = false)
+
     private String countProject;
 
-    @Column(nullable = false, unique = true)
+
     private Long customerId;
 }

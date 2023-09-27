@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-project-table
+      author: Serhii
+      changes:
+        - createTable:
+            tableName: project
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_project
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: create-project-stack-table
+      author: Serhii
+      changes:
+        - createTable:
+            tableName: project_stack
+            columns:
+              - column:
+                  name: project_uuid
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stack_technology
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: add-foreign-key-constraint
+      author: Serhii
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: project_stack
+            baseColumnNames: project_uuid
+            referencedTableName: project
+            referencedColumnNames: uuid
+            constraintName: FK_project_stack_project_uuid
+            onDelete: CASCADE

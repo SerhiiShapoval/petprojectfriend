@@ -16,7 +16,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 @Setter
 @Getter
-@ToString(exclude = "id")
+@ToString(exclude = "uuid")
 @Table(name = "project")
 @Builder
 public class Project {
@@ -38,11 +38,12 @@ public class Project {
     @Column(nullable = false)
     private String description;
 
-    @Size(min = 1, max = 5, message = " Rating can be from 1 to 5 ")
+
     private int rating;
 
+    @Column(name = "stack_technology")
     @ElementCollection
-    private List<String> languages;
+    private List<String> stack;
 
     @Enumerated(EnumType.STRING)
     private Status status;

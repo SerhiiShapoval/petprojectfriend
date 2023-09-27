@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: root
+      port: 27017
+      host: mongodb
+      database: profileCustomer
+  jpa:
+    generate-ddl: true
+    show-sql: true

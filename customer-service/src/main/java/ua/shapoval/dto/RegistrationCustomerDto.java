@@ -32,7 +32,7 @@ public class RegistrationCustomerDto {
     @Schema(description = "User email address validate regexp ",
                 example = "user@example.com")
     @NotBlank(message = " Email can`t be empty " )
-    @Pattern(regexp ="^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z]{2,6})$",
+    @Pattern(regexp ="^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,6})$",
             message = " Input correct email address for registration ")
     private String email;
 
